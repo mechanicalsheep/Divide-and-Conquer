@@ -68,10 +68,21 @@ namespace Divide_and_Conquer
             string num = temp[1];
             return num;
         }
+        public void initapp()
+        {
+            int size = ConfigurationManager.AppSettings.Count;
+            string[] appkeys= new string[size];
+            for(int i=0; i<size; i++)
+            {
+                appkeys[i]= GetKey(ConfigurationManager.AppSettings.GetKey(i));
+                Console.WriteLine("appkey[" + i + "] is: " + appkeys[i]);
+            }
 
+        }
 
         public void splitting()
         {
+            initapp();
             // Get a fresh copy of the sample PDF file
             string filename = "grade 1.pdf";
             String initial = Path.Combine("D:\\Homeworks\\testing struct", filename);
