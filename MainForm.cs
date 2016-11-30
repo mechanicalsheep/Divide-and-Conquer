@@ -18,24 +18,25 @@ namespace Divide_and_Conquer
     public partial class MainForm : Form
     {
         List<String> x;
-        
-        public MainForm()
+        string[] appkeys;
+        string dest;
+       public MainForm()
         {
-            //hiding= false;
+            
             var formtemp = this;
             InitializeComponent();
             //testing things then moving them either in new methods or different location.
              x = new List<String>(ConfigurationManager.AppSettings["Grade1"].Split(new char[] { ';' }));
-
-            getGradeNumber("grade 11");
-            for (int i = 0; i < x.Count; i++)
-            {
-                Console.WriteLine("Config Key of A is: " + x[i]);
-
-            }
-            Console.WriteLine(this.ToString());
+            initvar();
+            initapp();
+            
+           
         }
-
+        //initialize variables
+        public void initvar()
+        {
+            dest= @"D:\Homeworks\testing struct";
+        }
         private static string GetKey(string key)
         {
             return ConfigurationManager.AppSettings[key];
@@ -71,26 +72,39 @@ namespace Divide_and_Conquer
         public void initapp()
         {
             int size = ConfigurationManager.AppSettings.Count;
-            string[] appkeys= new string[size];
+            appkeys= new string[size];
             for(int i=0; i<size; i++)
             {
-                appkeys[i]= GetKey(ConfigurationManager.AppSettings.GetKey(i));
+                appkeys[i]= ConfigurationManager.AppSettings.GetKey(i);
                 Console.WriteLine("appkey[" + i + "] is: " + appkeys[i]);
             }
 
         }
 
-        public void splitting()
+        public void testsplit()
         {
-            initapp();
+            
+            DirectoryInfo accessfile = new DirectoryInfo(dest);
+            foreach(FileInfo fi in accessfile.GetFiles())
+            {
+                splitting(fi);
+            }
+            
+            
+        }
+        public void splitting(FileInfo currentFile)
+        {
+            string filename = currentFile.Name;
+            string name = Path.GetFileNameWithoutExtension(filename);
+            Console.WriteLine("File name is now " + filename);
             // Get a fresh copy of the sample PDF file
-            string filename = "grade 1.pdf";
+            //string filename = "grade 1.pdf";
             String initial = Path.Combine("D:\\Homeworks\\testing struct", filename);
-           
 
-            string dest = Path.Combine("D:\\Homeworks\\testing struct\\debug", filename);
-          
 
+            //string dest = Path.Combine("D:\\Homeworks\\testing struct\\debug", filename);
+            string dest = Path.Combine("D:\\Homeworks\\testing struct\\", name, string.Format("{0}.pdf", getGradeNumber(name)));
+            Console.WriteLine("DEST IS: " + dest);
             File.Copy(Path.Combine("D:\\Homeworks\\testing struct", filename),
                 Path.Combine("D:\\Homeworks\\testing struct\\debug", filename), true);
             
@@ -98,7 +112,7 @@ namespace Divide_and_Conquer
             //changed filename arg to initial
             PdfDocument inputDocument = PdfReader.Open(dest, PdfDocumentOpenMode.Import);
 
-            string name = Path.GetFileNameWithoutExtension(filename);
+           
             for (int idx = 0; idx < inputDocument.PageCount; idx++)
             {
                 // Create new document
@@ -115,7 +129,7 @@ namespace Divide_and_Conquer
                 
                 if (idx <= x.Count)
                 {
-                    outputDocument.Save(Path.Combine("D:\\Homeworks\\testing struct\\",name, String.Format("{0}{1}.pdf", getGradeNumber(name), x[idx])));
+                    outputDocument.Save(Path.Combine("D:\\Homeworks\\testing struct\\",name, string.Format("{0}{1}.pdf", getGradeNumber(name), x[idx])));
                 }
                 else
                 {
@@ -127,7 +141,8 @@ namespace Divide_and_Conquer
         }
         private void button_Convert_Click(object sender, EventArgs e)
         {
-            splitting();
+            //splitting();
+            testsplit();
         }
     }
 }
