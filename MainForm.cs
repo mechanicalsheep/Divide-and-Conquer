@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -17,14 +17,17 @@ namespace Divide_and_Conquer
 {
     public partial class MainForm : Form
     {
-        bool hiding;
+        List<String> x;
+        
         public MainForm()
         {
-            hiding= false;
+            //hiding= false;
             var formtemp = this;
             InitializeComponent();
             //testing things then moving them either in new methods or different location.
-            var x = new List<String>(ConfigurationManager.AppSettings["Grade1"].Split(new char[] { ';' }));
+             x = new List<String>(ConfigurationManager.AppSettings["Grade1"].Split(new char[] { ';' }));
+
+            getGradeNumber("grade 11");
             for (int i = 0; i < x.Count; i++)
             {
                 Console.WriteLine("Config Key of A is: " + x[i]);
@@ -36,6 +39,7 @@ namespace Divide_and_Conquer
         private static string GetKey(string key)
         {
             return ConfigurationManager.AppSettings[key];
+            
         }
 
         private static void SetKey(string key, string value)
@@ -46,21 +50,8 @@ namespace Divide_and_Conquer
             configuration.Save(ConfigurationSaveMode.Full, true);
             ConfigurationManager.RefreshSection("appSettings");
         }
-        private void tabPage2_Click(object sender, EventArgs e)
-        {
-                    }
-
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
        
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
+       
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -70,15 +61,24 @@ namespace Divide_and_Conquer
            
            
         }
+
+        public string getGradeNumber(string name)
+        {
+            string[] temp = name.Split(new char[] {' '});
+            string num = temp[1];
+            return num;
+        }
+
+
         public void splitting()
         {
             // Get a fresh copy of the sample PDF file
             string filename = "grade 1.pdf";
             String initial = Path.Combine("D:\\Homeworks\\testing struct", filename);
-            //Console.WriteLine("initial file string= " + initial);
+           
 
             string dest = Path.Combine("D:\\Homeworks\\testing struct\\debug", filename);
-            //Console.WriteLine("destination string is: " + dest);
+          
 
             File.Copy(Path.Combine("D:\\Homeworks\\testing struct", filename),
                 Path.Combine("D:\\Homeworks\\testing struct\\debug", filename), true);
@@ -93,15 +93,26 @@ namespace Divide_and_Conquer
                 // Create new document
                 PdfDocument outputDocument = new PdfDocument();
                 outputDocument.Version = inputDocument.Version;
-                outputDocument.Info.Title =
-                  String.Format("Page {0} of {1}", idx + 1, inputDocument.Info.Title);
+           
+                    outputDocument.Info.Title =
+                   String.Format("Page {0} of {1}", idx + 1, inputDocument.Info.Title);
+                
                 outputDocument.Info.Creator = inputDocument.Info.Creator;
-               // PdfReader.Open(outputDocument)
+           
                 // Add the page and save it
                 outputDocument.AddPage(inputDocument.Pages[idx]);
-                outputDocument.Save(Path.Combine("D:\\Homeworks\\testing struct\\debug", String.Format("{0} - Page {1}.pdf", name, idx + 1)));
-                //outputDocument.save
+                
+                if (idx <= x.Count)
+                {
+                    outputDocument.Save(Path.Combine("D:\\Homeworks\\testing struct\\",name, String.Format("{0}{1}.pdf", getGradeNumber(name), x[idx])));
+                }
+                else
+                {
+                    outputDocument.Save(Path.Combine("D:\\Homeworks\\testing struct\\debug", String.Format("{0} - Unassigned {1}.pdf", name, idx+1)));
+                }
             }
+            Console.WriteLine("Deleting copied file");
+            File.Delete(Path.Combine("D:\\Homeworks\\testing struct\\debug", filename));
         }
         private void button_Convert_Click(object sender, EventArgs e)
         {
