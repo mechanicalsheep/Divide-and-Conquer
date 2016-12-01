@@ -26,7 +26,7 @@ namespace Divide_and_Conquer
             var formtemp = this;
             InitializeComponent();
             //testing things then moving them either in new methods or different location.
-             x = new List<String>(ConfigurationManager.AppSettings["Grade1"].Split(new char[] { ';' }));
+            
             initvar();
             initapp();
             
@@ -71,23 +71,45 @@ namespace Divide_and_Conquer
         }
         public void initapp()
         {
+            //SHOULD NOT BE GRADE1
+           // x = new List<String>(ConfigurationManager.AppSettings["Grade1"].Split(new char[] { ';' }));
             int size = ConfigurationManager.AppSettings.Count;
-            appkeys= new string[size];
-            for(int i=0; i<size; i++)
+            appkeys = new string[size];
+            for (int i = 0; i < size; i++)
             {
-                appkeys[i]= ConfigurationManager.AppSettings.GetKey(i);
+                appkeys[i] = ConfigurationManager.AppSettings.GetKey(i);
                 Console.WriteLine("appkey[" + i + "] is: " + appkeys[i]);
             }
-
         }
+            public string getKeyName(int index)
+        {
+            return appkeys[index];
+        }
+
+       /* public string[] getKeyValues(int keyindex)
+        {
+            Console.WriteLine("getKeyValue() Method Called");
+            Console.WriteLine("appkeys["+keyindex+"].length is: "+appkeys[keyindex].Length);
+            string[] keyvalues = new string[appkeys[keyindex].Length];
+            for (int i=0; i<keyvalues.Length; i++)
+            {
+                keyvalues[i]=appkeys[keyinde
+            }
+            return 
+        }
+
+        */
 
         public void testsplit()
         {
             
             DirectoryInfo accessfile = new DirectoryInfo(dest);
-            foreach(FileInfo fi in accessfile.GetFiles())
+            int index=0;
+            foreach (FileInfo fi in accessfile.GetFiles())
             {
+                x = new List<String>(ConfigurationManager.AppSettings[getKeyName(index)].Split(new char[] { ';' }));
                 splitting(fi);
+                index++;
             }
             
             
@@ -96,6 +118,7 @@ namespace Divide_and_Conquer
         {
             string filename = currentFile.Name;
             string name = Path.GetFileNameWithoutExtension(filename);
+            
             Console.WriteLine("File name is now " + filename);
             // Get a fresh copy of the sample PDF file
             
@@ -117,6 +140,7 @@ namespace Divide_and_Conquer
             {
                 try
                 {
+                   
                     Console.WriteLine("strind dest = " + Path.Combine("D:\\Homeworks\\testing struct\\", name, string.Format("{0}{1}.pdf", getGradeNumber(name), x[idx])) + "      idx[" + idx + "]");
                     string dest = Path.Combine("D:\\Homeworks\\testing struct\\", name, string.Format("{0}{1}.pdf", getGradeNumber(name), x[idx]));
                    
