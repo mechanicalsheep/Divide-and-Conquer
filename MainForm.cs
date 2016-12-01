@@ -25,18 +25,13 @@ namespace Divide_and_Conquer
             
             var formtemp = this;
             InitializeComponent();
-            //testing things then moving them either in new methods or different location.
-            
-            initvar();
-            initapp();
+
+            initSplit();
             
            
         }
         //initialize variables
-        public void initvar()
-        {
-            dest= @"D:\Homeworks\testing struct";
-        }
+       
         private static string GetKey(string key)
         {
             return ConfigurationManager.AppSettings[key];
@@ -69,38 +64,27 @@ namespace Divide_and_Conquer
             string num = temp[1];
             return num;
         }
-        public void initapp()
+
+
+        public void initSplit()
         {
-            //SHOULD NOT BE GRADE1
-           // x = new List<String>(ConfigurationManager.AppSettings["Grade1"].Split(new char[] { ';' }));
+            dest = @"D:\Homeworks\testing struct";
             int size = ConfigurationManager.AppSettings.Count;
             appkeys = new string[size];
             for (int i = 0; i < size; i++)
             {
                 appkeys[i] = ConfigurationManager.AppSettings.GetKey(i);
-                Console.WriteLine("appkey[" + i + "] is: " + appkeys[i]);
+                //Console.WriteLine("appkey[" + i + "] is: " + appkeys[i]);
             }
         }
-            public string getKeyName(int index)
+
+        public string getKeyName(int index)
         {
             return appkeys[index];
         }
 
-       /* public string[] getKeyValues(int keyindex)
-        {
-            Console.WriteLine("getKeyValue() Method Called");
-            Console.WriteLine("appkeys["+keyindex+"].length is: "+appkeys[keyindex].Length);
-            string[] keyvalues = new string[appkeys[keyindex].Length];
-            for (int i=0; i<keyvalues.Length; i++)
-            {
-                keyvalues[i]=appkeys[keyinde
-            }
-            return 
-        }
-
-        */
-
-        public void testsplit()
+        //initialize the documents and some vairables related to the splitting of files.
+        public void split()
         {
             
             DirectoryInfo accessfile = new DirectoryInfo(dest);
@@ -125,17 +109,12 @@ namespace Divide_and_Conquer
 
             //copy leads to the place where the file was copied.
             String copy = Path.Combine("D:\\Homeworks\\testing struct\\debug", filename);
-
-
-            
-            File.Copy(Path.Combine("D:\\Homeworks\\testing struct", filename),
-                Path.Combine(copy), true);
+            File.Copy(Path.Combine("D:\\Homeworks\\testing struct", filename), Path.Combine(copy), true);
             
             // Open the file
-            //changed filename arg to initial
             PdfDocument inputDocument = PdfReader.Open(copy, PdfDocumentOpenMode.Import);
 
-           
+           //go throughfile and split each page into respective grade using keys from app.config
             for (int idx = 0; idx < inputDocument.PageCount; idx++)
             {
                 try
@@ -156,7 +135,7 @@ namespace Divide_and_Conquer
                     // Add the page and save it
                     outputDocument.AddPage(inputDocument.Pages[idx]);
 
-                    //////////////added minus 1 here instead of idx because idx =1
+                   
                     if (idx <= x.Count)
                     {
                         outputDocument.Save(Path.Combine("D:\\Homeworks\\testing struct\\", name, string.Format("{0}{1}.pdf", getGradeNumber(name), x[idx])));
@@ -180,8 +159,7 @@ namespace Divide_and_Conquer
         }
         private void button_Convert_Click(object sender, EventArgs e)
         {
-            //splitting();
-            testsplit();
+            split();
         }
     }
 }
