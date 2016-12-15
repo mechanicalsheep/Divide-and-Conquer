@@ -12,13 +12,15 @@ namespace Divide_and_Conquer
         List<String> x;
         string[] appkeys;
         string dest;
-
+        MainForm superForm;
         //constructor accepts string to where the folder will be in order to split.
-        public Splitter(string sourcefolder)
+        public Splitter(string sourcefolder, MainForm x)
         {
+            superForm = x;
             dest = sourcefolder;
             var formtemp = this;
-            setstatus( "splitter called");
+            
+            superForm.setstatus( "splitter called");
             initSplit();
         }
 
@@ -83,7 +85,7 @@ namespace Divide_and_Conquer
             string filename = currentFile.Name;
             string name = Path.GetFileNameWithoutExtension(filename);
 
-          setstatus("File name is now " + filename);
+         superForm.setstatus("File name is now: " + filename);
             // Get a fresh copy of the sample PDF file
 
             /*
@@ -103,10 +105,11 @@ namespace Divide_and_Conquer
             {
                 try
                 {
-
-                    setstatus("strind dest = " + Path.Combine(getDest(), name, string.Format("{0}{1}.pdf", getGradeNumber(name), x[idx])) + "      idx[" + idx + "]");
+                    Console.WriteLine(" " + string.Format("{0}{1}.pdf", getGradeNumber(name), x[idx]));
+                   //testing purposes, shows full path and file name as well as index of Key idx[(int)]
+                    // superForm.setstatus("string dest = " + Path.Combine(getDest(), name, string.Format("{0}{1}.pdf", getGradeNumber(name), x[idx])) + "      idx[" + idx + "]");
                     string dest = Path.Combine(getDest(), name, string.Format("{0}{1}.pdf", getGradeNumber(name), x[idx]));
-
+                    superForm.setstatus("Splitting " + string.Format("{0}{1}.pdf",getGradeNumber(name),x[idx]));
                     // Create new document
                     PdfDocument outputDocument = new PdfDocument();
                     outputDocument.Version = inputDocument.Version;
