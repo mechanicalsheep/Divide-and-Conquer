@@ -1,13 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using PdfSharp.Pdf;
 using PdfSharp.Pdf.IO;
 using System.IO;
 using System.Configuration;
-using System.Collections.Specialized;
 
 namespace Divide_and_Conquer
 {
@@ -17,9 +13,12 @@ namespace Divide_and_Conquer
         string[] appkeys;
         string dest;
 
-        public Splitter()
+        //constructor accepts string to where the folder will be in order to split.
+        public Splitter(string sourcefolder)
         {
+            dest = sourcefolder;
             var formtemp = this;
+            setstatus( "splitter called");
             initSplit();
         }
 
@@ -34,9 +33,19 @@ namespace Divide_and_Conquer
         //initialize splitting variables
         public void initSplit()
         {
+            
             //for now, dest is set to testing struct in D:\homeworks
+            /*
+             * Commented for now, dest variable relies on browse folder choice or default textbox1.text
             dest = @"D:\Homeworks\testing struct";
+            */
             int size = ConfigurationManager.AppSettings.Count;
+           
+            /*
+             * TEST CODE FOR APP.CONFIG
+            //var sizeofmeow = ConfigurationManager.GetSection("kitty") as NameValueConfigurationCollection;
+            //Console.WriteLine("KITTTYYYYYYY= "+sizeofmeow["kitty"].ToString());
+           */
             appkeys = new string[size];
             for (int i = 0; i < size; i++)
             {
@@ -65,20 +74,27 @@ namespace Divide_and_Conquer
             }
 
         }
-
+        public string getDest()
+        {
+            return dest;
+        }
         public void splitting(FileInfo currentFile)
         {
             string filename = currentFile.Name;
             string name = Path.GetFileNameWithoutExtension(filename);
 
-            Console.WriteLine("File name is now " + filename);
+          setstatus("File name is now " + filename);
             // Get a fresh copy of the sample PDF file
 
-
+            /*
+             * change the hardcoded location to dest.
             //copy leads to the place where the file was copied.
             String copy = Path.Combine("D:\\Homeworks\\testing struct\\debug", filename);
             File.Copy(Path.Combine("D:\\Homeworks\\testing struct", filename), Path.Combine(copy), true);
+            */
 
+            string copy = Path.Combine(dest+ "\\debug", filename);
+            File.Copy(Path.Combine(dest, filename), Path.Combine(copy), true);
             // Open the file
             PdfDocument inputDocument = PdfReader.Open(copy, PdfDocumentOpenMode.Import);
 
@@ -88,8 +104,8 @@ namespace Divide_and_Conquer
                 try
                 {
 
-                    Console.WriteLine("strind dest = " + Path.Combine("D:\\Homeworks\\testing struct\\", name, string.Format("{0}{1}.pdf", getGradeNumber(name), x[idx])) + "      idx[" + idx + "]");
-                    string dest = Path.Combine("D:\\Homeworks\\testing struct\\", name, string.Format("{0}{1}.pdf", getGradeNumber(name), x[idx]));
+                    setstatus("strind dest = " + Path.Combine(getDest(), name, string.Format("{0}{1}.pdf", getGradeNumber(name), x[idx])) + "      idx[" + idx + "]");
+                    string dest = Path.Combine(getDest(), name, string.Format("{0}{1}.pdf", getGradeNumber(name), x[idx]));
 
                     // Create new document
                     PdfDocument outputDocument = new PdfDocument();
@@ -106,12 +122,20 @@ namespace Divide_and_Conquer
 
                     if (idx <= x.Count)
                     {
-                        outputDocument.Save(Path.Combine("D:\\Homeworks\\testing struct\\", name, string.Format("{0}{1}.pdf", getGradeNumber(name), x[idx])));
-                        outputDocument.Close();
+                        if (Convert.ToInt32(getGradeNumber(name)) < 5)
+                        {
+                            outputDocument.Save(Path.Combine(getDest(), name, string.Format("{0}{1}{2}.pdf", "unjoined ", getGradeNumber(name), x[idx])));
+                            outputDocument.Close();
+                        }
+                        else
+                        {
+                            outputDocument.Save(Path.Combine(getDest(), name, string.Format("{0}{1}.pdf", getGradeNumber(name), x[idx])));
+                            outputDocument.Close();
+                        }
                     }
                     else
                     {
-                        outputDocument.Save(Path.Combine("D:\\Homeworks\\testing struct\\debug", String.Format("{0} - Unassigned {1}.pdf", name, idx)));//+ 1)));
+                        outputDocument.Save(Path.Combine(dest+"\\debug", String.Format("{0} - Unassigned {1}.pdf", name, idx)));//+ 1)));
                     }
                 }
                 catch (System.ArgumentOutOfRangeException e)
@@ -123,7 +147,20 @@ namespace Divide_and_Conquer
             //inputDocument.Close();
 
             Console.WriteLine("Deleting copied file");
-            File.Delete(Path.Combine("D:\\Homeworks\\testing struct\\debug", filename));
+            File.Delete(Path.Combine(getDest()+"\\debug", filename));
+        }
+
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            // 
+            // Splitter
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.ClientSize = new System.Drawing.Size(526, 375);
+            this.Name = "Splitter";
+            this.ResumeLayout(false);
+
         }
     }
 }
