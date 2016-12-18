@@ -20,7 +20,7 @@ namespace Divide_and_Conquer
             dest = sourcefolder;
             var formtemp = this;
             
-            superForm.setstatus( "splitter called");
+            superForm.setstatus( "splitter called on: " + dest);
             initSplit();
         }
 
@@ -36,17 +36,12 @@ namespace Divide_and_Conquer
         public void initSplit()
         {
             
-            //for now, dest is set to testing struct in D:\homeworks
-            /*
-             * Commented for now, dest variable relies on browse folder choice or default textbox1.text
-            dest = @"D:\Homeworks\testing struct";
-            */
+          
             int size = ConfigurationManager.AppSettings.Count;
            
             /*
              * TEST CODE FOR APP.CONFIG
-            //var sizeofmeow = ConfigurationManager.GetSection("kitty") as NameValueConfigurationCollection;
-            //Console.WriteLine("KITTTYYYYYYY= "+sizeofmeow["kitty"].ToString());
+             *           
            */
             appkeys = new string[size];
             for (int i = 0; i < size; i++)
