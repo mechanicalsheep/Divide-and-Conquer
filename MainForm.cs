@@ -6,10 +6,15 @@ namespace Divide_and_Conquer
 {
     public partial class MainForm : Form
     {
-        
-       public MainForm()
+        public void setstatus(string value)
         {
+           this.statusbox.Text += value + Environment.NewLine; 
+        }
+        public MainForm()
+        {
+
             InitializeComponent();
+            setstatus( "Program Started...");
             
         }
         //initialize variables
@@ -27,7 +32,7 @@ namespace Divide_and_Conquer
             configuration.Save(ConfigurationSaveMode.Full, true);
             ConfigurationManager.RefreshSection("appSettings");
         }
-       
+
        
 
         private void button1_Click(object sender, EventArgs e)
@@ -40,8 +45,33 @@ namespace Divide_and_Conquer
        
         private void button_Convert_Click(object sender, EventArgs e)
         {
-            Splitter s = new Divide_and_Conquer.Splitter();
+            Splitter s = new Splitter(textBox1.Text, this);
             s.split();
+        }
+
+        private void button_Merge_Click(object sender, EventArgs e)
+        {
+            //TODO: calls m constructor for testing, after test is complete, call apropriate class
+            Merger m = new Merger();
+
+        }
+
+        private void button_Browse_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog dlg = new FolderBrowserDialog();
+
+            dlg.ShowDialog();
+         
+                string filename = dlg.SelectedPath;
+                textBox1.Text = filename;
+            
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            setstatus( "mew");
+            Splitter sp = new Splitter(textBox1.Text, this);
+            
         }
     }
 }
