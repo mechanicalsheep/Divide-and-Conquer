@@ -7,6 +7,7 @@ namespace Divide_and_Conquer
 {
     public partial class MainForm : Form
     {
+        public string[] filer = new string[3];
         public void setstatus(string value)
         {
            this.statusbox.AppendText( value + Environment.NewLine);
@@ -15,14 +16,16 @@ namespace Divide_and_Conquer
             
         }
 
-
+        
         public MainForm()
         {
 
             InitializeComponent();
          
             setstatus( "Program Started...");
-           
+
+            //create a string to store all the paths to merge
+          
 
         }
         //initialize variables
@@ -65,12 +68,7 @@ private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
             s.split();
         }
 
-        private void button_Merge_Click(object sender, EventArgs e)
-        {
-            //TODO: calls m constructor for testing, after test is complete, call apropriate class
-            Merger m = new Merger();
-
-        }
+       
 
         private void button_Browse_Click(object sender, EventArgs e)
         {
@@ -101,13 +99,18 @@ private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
             bool fileExists = dlg.CheckFileExists;
             if (fileExists)
             {
-                FileInfo fi = new FileInfo(dlg.FileName);
+                filer[0]=dlg.FileName;
                 setstatus(dlg.FileName);
                 button_g1.BackColor = System.Drawing.Color.Green;
                 button_g1.ForeColor = System.Drawing.Color.White;
-                button_g1.Text = fi.Name;
+                
             }
            
+        }
+
+        private void button_Merge_Click(object sender, EventArgs e)
+        {
+            Merger m = new Merger(filer, this);
         }
     }
 }
