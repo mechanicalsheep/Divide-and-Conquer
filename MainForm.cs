@@ -1,6 +1,7 @@
 using System;
 using System.Configuration;
 using System.Windows.Forms;
+using System.IO;
 
 namespace Divide_and_Conquer
 {
@@ -8,14 +9,21 @@ namespace Divide_and_Conquer
     {
         public void setstatus(string value)
         {
-           this.statusbox.Text += value + Environment.NewLine; 
+           this.statusbox.AppendText( value + Environment.NewLine);
+            statusbox_Merger.AppendText(value + Environment.NewLine);
+           
+            
         }
+
+
         public MainForm()
         {
 
             InitializeComponent();
+         
             setstatus( "Program Started...");
-            
+           
+
         }
         //initialize variables
         private static string GetKey(string key)
@@ -40,9 +48,17 @@ namespace Divide_and_Conquer
             EditForm ef = new EditForm();
             ef.Show();
         }
- 
-        
        
+
+
+private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            tabControl.TabPages[tabControl.SelectedIndex].Controls.Add(statusbox);
+          
+               
+            
+        }
+
         private void button_Convert_Click(object sender, EventArgs e)
         {
             Splitter s = new Splitter(textBox1.Text, this);
@@ -72,6 +88,26 @@ namespace Divide_and_Conquer
             setstatus( "mew");
             Splitter sp = new Splitter(textBox1.Text, this);
             
+        }
+
+        private void button_g1_Click(object sender, EventArgs e)
+        {
+            
+            FileDialog dlg = new OpenFileDialog();
+            dlg.DefaultExt = ".pdf";
+            dlg.Filter="PDF Files (*.pdf) | *.pdf";
+
+            dlg.ShowDialog();
+            bool fileExists = dlg.CheckFileExists;
+            if (fileExists)
+            {
+                FileInfo fi = new FileInfo(dlg.FileName);
+                setstatus(dlg.FileName);
+                button_g1.BackColor = System.Drawing.Color.Green;
+                button_g1.ForeColor = System.Drawing.Color.White;
+                button_g1.Text = fi.Name;
+            }
+           
         }
     }
 }
