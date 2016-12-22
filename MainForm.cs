@@ -5,9 +5,10 @@ using System.IO;
 
 namespace Divide_and_Conquer
 {
+    
     public partial class MainForm : Form
     {
-        public string[] filer = new string[3];
+        public pathset[] filer = new pathset[4];
         public void setstatus(string value)
         {
            this.statusbox.AppendText( value + Environment.NewLine);
@@ -81,12 +82,11 @@ private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
             
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        public void open_file()
         {
-            setstatus( "mew");
-            Splitter sp = new Splitter(textBox1.Text, this);
-            
+
         }
+       
 
         private void button_g1_Click(object sender, EventArgs e)
         {
@@ -99,18 +99,68 @@ private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
             bool fileExists = dlg.CheckFileExists;
             if (fileExists)
             {
-                filer[0]=dlg.FileName;
+                FileInfo file = new FileInfo(dlg.FileName);
+                //sets up a single pathSet object
+                string arpath = textBox1.Text+ "\\Grade 1";
+                //Console.WriteLine("arabic path is: " + arpath);
+                string outpath = arpath+ "\\merged";
+
+                filer[0]=new pathset(file,arpath, outpath) ;
                 setstatus(dlg.FileName);
                 button_g1.BackColor = System.Drawing.Color.Green;
                 button_g1.ForeColor = System.Drawing.Color.White;
                 
             }
+            
            
         }
 
         private void button_Merge_Click(object sender, EventArgs e)
         {
-            Merger m = new Merger(filer, this);
+            Merger m = new Merger(this, filer);
+          //  testing t = new testing();
+        }
+    }
+
+
+
+    public class pathset
+    {
+       public FileInfo get_EnglishFile()
+        {
+            return englishFile;
+        }
+        public void set_EnglishFile(FileInfo file)
+        {
+            englishFile = file;
+        }
+
+        public string get_arabicPath()
+        {
+            return arabicPath;
+        }
+        public void set_arabicPath(string arab)
+        {
+            arabicPath = arab;
+        }
+        public string get_outputPath()
+        {
+            return outputPath;
+        }
+        public void set_outputPath(string outp)
+        {
+            outputPath = outp;
+        }
+
+        FileInfo englishFile;
+        string arabicPath;
+        string outputPath;
+
+        public pathset(FileInfo engFile, string arabPath, string outpath)
+        {
+            englishFile = engFile;
+            arabicPath = arabPath;
+            outputPath = outpath;
         }
     }
 }
