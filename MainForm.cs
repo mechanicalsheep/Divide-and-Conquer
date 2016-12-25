@@ -8,6 +8,7 @@ namespace Divide_and_Conquer
 
     public partial class MainForm : Form
     {
+
         public pathset[] filer = new pathset[4];
         public void setstatus(string value)
         {
@@ -23,10 +24,10 @@ namespace Divide_and_Conquer
 
             InitializeComponent();
 
+
             setstatus("Program Started...");
 
             //create a string to store all the paths to merge
-
 
         }
         //initialize variables
@@ -68,6 +69,7 @@ namespace Divide_and_Conquer
             Splitter s = new Splitter(textBox1.Text, this);
             s.split();
         }
+
 
 
 
@@ -382,6 +384,7 @@ namespace Divide_and_Conquer
             englishFile = engFile;
             arabicPath = arabPath;
             outputPath = outpath;
+
         }
     }
 }
