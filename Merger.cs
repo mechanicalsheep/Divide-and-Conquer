@@ -16,7 +16,7 @@ namespace Divide_and_Conquer
         string dest;
         string arabic_Path;
         pathset paths;
-        
+
 
         public Merger(FileInfo file, string arpath, string outpath)
         {
@@ -49,35 +49,35 @@ namespace Divide_and_Conquer
 
 
             //Console.WriteLine("Paths[" + i + "] is: " + paths);
-           // deconstruct_pathset(paths);
+            // deconstruct_pathset(paths);
             DirectoryInfo dir = new DirectoryInfo(arabic_Path);
             foreach (FileInfo file in dir.GetFiles())
             {
                 merging(file);
             }
-        
-    
+
+
 
             /////////////////BAD CODING
 
 
-           /* for (int i = 0; i < paths.Length; i++)
-            {
-                //Console.WriteLine("Paths[" + i + "] is: " + paths);
-                deconstruct_pathset(paths[i]);
-                DirectoryInfo dir = new DirectoryInfo(arabic_Path);
-                foreach (FileInfo file in dir.GetFiles())
-                {
-                    merging(file);
-                }
-            }*/
+            /* for (int i = 0; i < paths.Length; i++)
+             {
+                 //Console.WriteLine("Paths[" + i + "] is: " + paths);
+                 deconstruct_pathset(paths[i]);
+                 DirectoryInfo dir = new DirectoryInfo(arabic_Path);
+                 foreach (FileInfo file in dir.GetFiles())
+                 {
+                     merging(file);
+                 }
+             }*/
         }
-       
+
 
 
         public void merging(FileInfo currentFile)
         {
-            
+
 
             // Open the output document
             PdfDocument outputDocument = new PdfDocument();
@@ -111,16 +111,24 @@ namespace Divide_and_Conquer
 
             // Save the document...
             // const string filename = "ConcatenatedDocument1_tempfile.pdf";
-            string[] temp = arabic_Page.Name.Split(new char[] { ' ' });
-            string name = temp[1];
-            outputDocument.Save(Path.Combine(dest, name)); 
+            //////////////////////////////////////////BAD CODING, HARD CODE GRADE 5 EXCEPTION
+            if (arabic_Path.Contains("Grade 5"))
+            {
+                outputDocument.Save(Path.Combine(dest, arabic_Page.Name));
+            }
+            else
+            {
+                string[] temp = arabic_Page.Name.Split(new char[] { ' ' });
+
+
+
+                string name = temp[1];
+                outputDocument.Save(Path.Combine(dest, name));
+            }
             // ...and start a viewer.
             // Process.Start(filename);
         }
     }
 
 
-    }
-
-
-
+}
